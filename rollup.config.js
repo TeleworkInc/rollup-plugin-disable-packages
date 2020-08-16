@@ -1,4 +1,5 @@
 const disablePackages = require('.');
+const preserveShebang = require('rollup-plugin-preserve-shebang');
 
 module.exports = [
   {
@@ -8,6 +9,7 @@ module.exports = [
       format: 'esm',
     },
     plugins: [
+      preserveShebang(),
       disablePackages('chalk'),
     ],
   },
@@ -18,6 +20,7 @@ module.exports = [
       format: 'cjs',
     },
     plugins: [
+      preserveShebang(),
       disablePackages('chalk'),
     ],
   },

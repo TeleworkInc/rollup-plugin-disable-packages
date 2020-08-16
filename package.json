@@ -11,6 +11,7 @@
     "estraverse": "^5.2.0"
   },
   "devDependencies": {
-    "rollup": "^2.26.0"
+    "rollup": "^2.26.0",
+    "rollup-plugin-preserve-shebang": "^1.0.1"
   }
 }

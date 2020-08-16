@@ -10,6 +10,8 @@ const estraverse = require('estraverse');
 const esprima = require('esprima');
 const codeGen = require('escodegen');
 
+const shebangPattern = /^#!.*/;
+
 /**
  * Import `empty` instead of a given module.
  *
@@ -23,7 +25,15 @@ const disablePackages = (...disabledPackages) => {
   return {
     name: 'disablePackages',
     renderChunk: (code, chunk, options) => {
-      const ast = esprima.parseModule(code);
+      /**
+       * Handle shebangs which might be in the beginning of files.
+       */
+      const hasShebang = shebangPattern.test(code);
+      const shebangString = hasShebang
+        ? code.match(shebangPattern)[0]
+        : '';
+
+      const ast = esprima.parseModule(code.replace(shebangPattern, ''));
       const replaced = estraverse.replace(ast, {
         enter: function(node, parent) {
           /**
@@ -40,7 +50,7 @@ const disablePackages = (...disabledPackages) => {
             let replaceSource = ``;
             for (const specifier of node.specifiers) {
               const name = specifier.local.name;
-              replaceSource += `const ${name} = null;\n`;
+              replaceSource += `const ${name} = {};\n`;
             }
 
             return esprima.parseScript(replaceSource);
@@ -53,17 +63,19 @@ const disablePackages = (...disabledPackages) => {
             node.type === 'VariableDeclarator' &&
             node.init.type === 'CallExpression'
           ) {
-            console.log(node);
             node.init = {
-              type: 'Identifier',
-              name: 'null',
+              type: 'ObjectExpression',
+              properties: [],
             };
             console.log(node);
           }
         },
       });
 
-      return codeGen.generate(replaced);
+      const replacedSource = codeGen.generate(replaced);
+      return hasShebang
+          ? shebangString + '\n' + replacedSource
+          : replacedSource;
     },
   };
 };
