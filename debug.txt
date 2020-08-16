@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+'use strict';
+
 const chalk = require( 'chalk' );
 const chalk1 = require( 'chalk' );
 const chalk2 = require( 'chalk' );

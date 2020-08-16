@@ -6,6 +6,9 @@
   "author": "Christian Lewis <hello@trytelework.com>",
   "license": "MIT",
   "dependencies": {
+    "@babel/generator": "^7.11.0",
+    "@babel/parser": "^7.11.3",
+    "@babel/traverse": "^7.11.0",
     "escodegen": "^2.0.0",
     "esprima": "^4.0.1",
     "estraverse": "^5.2.0"

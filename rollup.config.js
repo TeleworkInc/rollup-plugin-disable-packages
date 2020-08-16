@@ -10,7 +10,7 @@ module.exports = [
     },
     plugins: [
       preserveShebang(),
-      disablePackages('chalk'),
+      disablePackages('chalk', 'fsevents'),
     ],
   },
   {
@@ -21,7 +21,7 @@ module.exports = [
     },
     plugins: [
       preserveShebang(),
-      disablePackages('chalk'),
+      disablePackages('chalk', 'fsevents'),
     ],
   },
 ];
