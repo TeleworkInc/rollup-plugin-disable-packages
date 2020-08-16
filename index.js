@@ -29,7 +29,7 @@ const disablePackages = (...names) => {
   const requirePattern = new RegExp(
       `require\\s*\\(.+?${namesPattern}.+?\\)`,
   );
-  console.log(requirePattern);
+  // console.log(requirePattern);
 
   return {
     name: 'disablePackages',
