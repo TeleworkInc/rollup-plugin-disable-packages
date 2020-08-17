@@ -8,17 +8,8 @@
 
 const path = require('path');
 const fs = require('fs');
-const estraverse = require('estraverse');
-const esprima = require('esprima');
-const codeGen = require('escodegen');
-
 const babel = require('@babel/core');
 
-const { parse } = require('@babel/parser');
-const traverse = require('@babel/traverse');
-const generate = require('@babel/generator');
-
-const requirePattern = /(?<=[;\n]).*=\s*require\(.*\)[;\s]?/g;
 const shebangPattern = /^#!.*/;
 
 /**
@@ -47,17 +38,10 @@ const disablePackages = (...disabledPackages) => {
        */
       const hasShebang = shebangPattern.test(code);
       const shebangString = hasShebang
-        ? code.match(shebangPattern)[0]
+        ? code.match(shebangPattern)[0] +'\n'
         : '';
 
       if (hasShebang) code = code.replace(shebangPattern, '');
-
-      // const ast = parse(
-      //     code.replace(shebangPattern, ''),
-      //     {
-      //       sourceType: 'module',
-      //     },
-      // );
 
       const output = babel.transformSync(code, {
         plugins: [
@@ -103,55 +87,7 @@ const disablePackages = (...disabledPackages) => {
         ],
       });
 
-      return output.code;
-
-      // const replaced = estraverse.replace(ast.program, {
-      //   enter: function(node, parent) {
-      //     /**
-      //      * ImportDeclarations[source.value in disabledPackages]
-      //      */
-      //     if (
-      //       /** Catch `import ... from 'disabled'` */
-      //       node.type === 'ImportDeclaration' &&
-      //       disabledPackages.includes(node.source.value)
-      //     ) {
-      //       /**
-      //        * Extract local variables that are assigned from this source.
-      //        */
-      //       let replaceSource = ``;
-      //       for (const specifier of node.specifiers) {
-      //         const name = specifier.local.name;
-      //         replaceSource += `const ${name} = {};\n`;
-      //       }
-
-      //       const replaceAst = parse(
-      //           replaceSource,
-      //           {
-      //             sourceType: 'module',
-      //           },
-      //       );
-      //     }
-
-      //     /**
-      //      * Catch VariableDeclaration with assignment to `require()`
-      //      */
-      //     if (
-      //       node.type === 'VariableDeclarator' &&
-      //       node.init.type === 'CallExpression'
-      //     ) {
-      //       node.init = {
-      //         type: 'ObjectExpression',
-      //         properties: [],
-      //       };
-      //       // console.log(node);
-      //     }
-      //   },
-      // });
-
-      // const replacedSource = codeGen.generate(replaced);
-      // return hasShebang
-      //     ? shebangString + '\n' + replacedSource
-      //     : replacedSource;
+      return shebangString + output.code;
     },
   };
 };
