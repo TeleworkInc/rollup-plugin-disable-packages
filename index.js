@@ -36,12 +36,7 @@ const disablePackages = (...disabledPackages) => {
       /**
        * Handle shebangs which might be in the beginning of files.
        */
-      const hasShebang = shebangPattern.test(code);
-      const shebangString = hasShebang
-        ? code.match(shebangPattern)[0] +'\n'
-        : '';
-
-      if (hasShebang) code = code.replace(shebangPattern, '');
+      code = code.replace(shebangPattern, '');
 
       const output = babel.transformSync(code, {
         plugins: [
@@ -87,7 +82,7 @@ const disablePackages = (...disabledPackages) => {
         ],
       });
 
-      return shebangString + output.code;
+      return output.code;
     },
   };
 };
