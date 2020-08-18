@@ -26,14 +26,6 @@ const disablePackages = (...disabledPackages) => {
     name: 'disablePackages',
     renderChunk: (code, chunk, options) => {
       /**
-       * Dump input code to a debugging file.
-       */
-      fs.writeFileSync(
-          path.resolve(process.cwd(), 'debug.txt'),
-          code,
-      );
-
-      /**
        * Handle shebangs which might be in the beginning of files.
        */
       code = code.replace(shebangPattern, '');
