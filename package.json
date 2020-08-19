@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-disable-packages",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "main": "index.js",
   "repository": "https://github.com/TeleworkInc/rollup-plugin-disable-packages.git",
   "author": "Christian Lewis <hello@trytelework.com>",
