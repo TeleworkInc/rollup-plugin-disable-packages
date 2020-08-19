@@ -1,7 +1,12 @@
 {
   "name": "rollup-plugin-disable-packages",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "main": "index.js",
+  "keywords": [
+    "rollup-plugin",
+    "disable",
+    "fsevents"
+  ],
   "repository": "https://github.com/TeleworkInc/rollup-plugin-disable-packages.git",
   "author": "Christian Lewis <hello@trytelework.com>",
   "license": "MIT",
